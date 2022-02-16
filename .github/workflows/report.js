@@ -9,6 +9,7 @@ const completed = async ({ github, context, core }) => {
 const actions = { requested, completed };
 
 module.exports = async (args) => {
+  console.log(args);
   const action = actions[args.github.event.action];
   if (action) await action(args)
 };
