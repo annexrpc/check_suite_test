@@ -2,22 +2,15 @@ name: report
 on:
   workflow_run:
     workflows: [ci]
-    types: [completed]
+    types: [completed, requested]
 
 jobs:
-  build:
+  report:
     runs-on: "ubuntu-latest"
     steps:
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
-      - name: Dump job context
-        run: echo '${{ toJSON(job) }}'
-      - name: Dump steps context
-        run: echo '${{ toJSON(steps) }}'
-      - name: Dump runner context
-        run: echo '${{ toJSON(runner) }}'
-      - name: Dump strategy context
-        run: echo '${{ toJSON(strategy) }}'
-      - name: Dump matrix context
-        run: echo '${{ toJSON(matrix) }}'
+      - uses: actions/checkout@v2
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const script = require('./.github/workflows/report.js')
+            await script({ github, context, core })
