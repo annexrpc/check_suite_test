@@ -1,0 +1,14 @@
+name: ci
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Build
+        run: echo "test" > result.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test-result
+          path: result.txt
